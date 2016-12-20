@@ -1,0 +1,202 @@
+﻿@model HomePageTransferData
+
+<!-- Header -->
+<header class="fadingHeader">
+
+    <div class="container">
+
+        <div class="intro-text">
+            <div class="intro-lead-in">Welcome To Our Community!</div>
+            <div class="intro-heading">It's Nice To Meet You</div>
+
+            <!-- -->
+            <form asp-controller="Home" asp-action="Search">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <input type="text" name="searchQuery" class="form-control searchInput" placeholder="ISBN, Title or Author" required data-validation-required-message="Please enter something." />
+                            <p class="help-block text-danger"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <button id="indexSearch" type="submit" class="btn btn-primary-lg searchButton">Search</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 col-lg-offset-2">
+                        <div class="radio radio-info radio-inline">
+                            <input id="inlineRadio1" type="radio" name="searchOption" checked value="book" />
+                            <label for="inlineRadio1"> Book </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="radio radio-info radio-inline">
+                            <input id="inlineRadio2" type="radio" name="searchOption" value="user" />
+                            <label for="inlineRadio2"> User </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!-- -->
+        </div>
+    </div>
+</header>
+
+<div class="container body-content">
+
+    <!-- TopBooks Grid Section -->
+    <section class="bg-lime">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Top Ordered Books</h2>
+                </div>
+            </div>
+            @foreach (var topBook in Model.TopBooks)
+            {
+                <div class="row">
+                    <div class="col-md-4 col-sm-6 portfolio-item">
+                        <a href="@($"#portfolioModal{topBook.Id}" )" class="portfolio-link" data-toggle="modal">
+                            <div class="portfolio-hover">
+                            </div>
+                            <i>
+                                <img src="@topBook.ImgUrl" class="img-responsive" alt="@topBook.Title">
+                            </i>
+                         </a>
+                    </div>
+                    <div class="col-md-4 portfolio-caption">
+                        <div class="row">
+                            <h4>@topBook.Title</h4>
+                            <p class="text-muted">Written: @topBook.Author</p>
+                        </div>
+                        <div class="row bottom viewBookDetailsStyle">
+                            <a href="#portfolioModal1" class="portfolio-link" data-toggle="modal">
+                                <div class="portfolio-hover-content">
+                                    <i class="fa-3x">View Details</i>
+                                </div>
+                           </a>
+                        </div>
+                    </div>
+                </div>
+
+                <hr />
+            }
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="bg-light-gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Our Amazing Team</h2>
+                    <h3 class="section-subheading text-muted">Gathered from all over the city.</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <img src="~/images/team/dimi.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Dimitar Yanis</h4>
+                        <p class="text-muted">Team Leader</p>
+                        <ul class="list-inline social-buttons">
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <img src="~/images/team/alex.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Alex Stefanov</h4>
+                        <p class="text-muted">Lead Marketer</p>
+                        <ul class="list-inline social-buttons">
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="team-member">
+                        <img src="~/images/team/deyan.jpg" class="img-responsive img-circle" alt="">
+                        <h4>Deyan Svetoslavov</h4>
+                        <p class="text-muted">Lead Developer</p>
+                        <ul class="list-inline social-buttons">
+                            <li>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <p class="large text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut eaque, laboriosam veritatis, quos non quis ad perspiciatis, totam corporis ea, alias ut unde.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Modals -->
+    <!-- Use the modals below to showcase details about your portfolio projects! -->
+    <!-- Portfolio Modal 1 -->
+    <!-- Change Logic if books get too many -->
+    @foreach(var book in Model.TopBooks)
+    {
+        <div class="portfolio-modal modal fade" id="@($"portfolioModal{book.Id}")" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="close-modal" data-dismiss="modal">
+                        <div class="lr">
+                            <div class="rl">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-8 col-lg-offset-2">
+                                <div class="modal-body">
+                                    <!-- Project Details Go Here -->
+                                    <img src="@book.ImgUrl" />
+                                    <p>@book.Title</p>
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            if(@Model.BookServiceMsg != undefined){
+            alert(@Model.BookServiceMsg.ToString())
+            }
+        });
+
+    </script>
+}

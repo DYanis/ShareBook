@@ -1,0 +1,133 @@
+﻿@model ShareBook.Models.BookViewModels.UploadBookViewModel
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<section>
+    <div class="container">
+        <form asp-controller="Book" asp-action="Create" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+            <h4>Upload Book!</h4>
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Author" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Author" class="form-control" />
+                    <span asp-validation-for="Author" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ISBN" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ISBN" class="form-control" />
+                    <span asp-validation-for="ISBN" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Title" class="form-control" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+            </div>
+            <!-- TODO: Get genders from database -->
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" class="btn btn-default">Upload</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</section>
+
+<section>
+    <div class="container">
+        <div class="row">
+            @*<div class="col-lg-6">
+                    <form method="POST" action="Create">
+                        <label for="Author">Author:</label>
+                        @Html.EditorFor(m => m.Author)<br />
+                        <label for="ISBN13">ISBN:</label>
+                        @Html.EditorFor(m => m.ISBN)<br />
+                        <label for="Title">Title:</label>
+                        @Html.EditorFor(m => m.Title)<br />
+
+                        <input type="submit" value="upload" />
+                    </form>
+                </div>*@
+
+            <form class="form-horizontal" name="frm1" id="frm1" action="#" method="post" enctype="multipart/form-data">
+
+                <input class="form-control" type="file" name="pfile" id="pfile" />
+
+                <input type="submit" class="btn btn-primary searchButton" value="Find book" name="btnadd" id="btnadd" style="margin-top: 25px" />
+            </form>
+
+        </div>
+
+        <h3>Title:</h3>
+        <h3 id="title"></h3>
+        <h3>Author:</h3>
+        <h3 id="author"></h3>
+        <h3 id="isbn"></h3>
+
+        @if (!string.IsNullOrEmpty(Model.Title))
+        {
+            <div class="row">
+                <div class="col-lg-6">
+                </div>
+                Your book:<br />
+                Title: @Model.Title <br />
+                Author: @Model.Author <br />
+            </div>
+        }
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script src="~/js/StopAffix.js"></script>
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+
+            $("#frm1").submit(function () {
+                var formData = new FormData($(this)[0]);
+                console.log(formData);
+                $.ajax({
+                    url: 'http://localhost:59979/',
+                    type: 'POST',
+                    data: formData,
+                    async: false,
+                    success: function (data) {
+                        SuccessCall(data.isbn);
+                    },
+                    cache: false,
+                    contentType: false,
+                    processData: false
+                });
+
+                return false;
+            });
+
+            function SuccessCall(data) {
+                console.log({ isbn: data });
+
+                $.ajax({
+                    url: 'GetBookInformationByISBN',
+                    type: 'POST',
+                    data: { isbn: data },
+                    success: function (data) {
+                        console.log(data);
+                        $('#title').text(data.title);
+                        $('#author').text(data.author);
+                        $('#isbn13').text(data.isbn);
+                    }
+                })
+            }
+
+        });
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@model ICollection<ShareBook.Models.BookViewModels.UsersBookViewModel>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container body-content">
+    <section>
+      @foreach (var item in Model)
+      {
+        <div class="row" style="padding: 5px">
+            <div class="col-lg-3 text-center">
+                <div class="portfolio-hover">
+                    <img src="@item.ImgUrl" />
+                </div>
+            </div>
+            <div class="col-lg-9 text-center">
+                <div class="portfolio-caption" style="text-align: left">
+                    <h4>
+                        @item.Title
+                    </h4>
+                    <h5>
+                        Author: @item.Author
+                    </h5>
+                    @if (item.ISBN10 == null)
+                    {
+                        <h5>
+                            ISBN: @item.ISBN13
+                        </h5>
+                    }
+                    else
+                    {
+                        <h5>
+                            ISBN: @item.ISBN10
+                        </h5>
+                    }
+
+
+                </div>
+
+            </div>
+            <hr />
+        </div>
+      }
+    </section>   
+</div>
+

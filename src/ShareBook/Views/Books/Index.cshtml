@@ -1,0 +1,21 @@
+﻿@model ShareBook.Models.BookViewModels.UploadBookViewModel
+
+<section>
+    <div class="container">
+        <form method="post" action="Book/Create">
+            @Html.EditorFor(m => m.Author)
+            @Html.EditorFor(m => m.ISBN13)
+            @Html.EditorFor(m => m.Title)
+            @{
+                SelectList genreList = new SelectList(Model.Genres);
+            }
+            @Html.DropDownListFor(m => m.Genre, genreList)
+            <input type="submit" value="upload" />
+        </form>
+    </div>
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script src="~/js/StopAffix.js"></script>
+}

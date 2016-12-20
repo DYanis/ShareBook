@@ -1,0 +1,88 @@
+@model ICollection<ShareBook.Models.UsersBookViewModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container body-content">
+    <section>
+        <form asp-controller="Home" asp-action="Search">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input type="text" name="searchQuery" class="form-control searchInput" placeholder="ISBN, Title or Author" required data-validation-required-message="Please enter something." />
+                        <p class="help-block text-danger"></p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <button id="indexSearch" type="submit" class="btn btn-primary-lg searchButton">Search</button>
+                </div>
+            </div>
+            <div class="row" style="padding: 25px">
+                <div class="col-md-4 col-lg-offset-2">
+                    <div class="radio radio-info radio-inline">
+                        <input id="inlineRadio1" type="radio" name="searchOption" checked value="book" />
+                        <label for="inlineRadio1"> Book </label>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="radio radio-info radio-inline">
+                        <input id="inlineRadio2" type="radio" name="searchOption" value="user" />
+                        <label for="inlineRadio2"> User </label>
+                    </div>
+                </div>
+            </div>
+        </form>
+        @if (Model.Count == 0)
+        {
+            <div class="container">
+                <h1 style="text-align: center">
+                    That doesn't ring a bell.
+                </h1>
+            </div>
+        }
+        else
+        {
+            <div class="container">
+                @foreach (var item in Model)
+                {
+                    <div class="row" style="padding: 5px">
+                        <div class="col-lg-3 text-center">
+                            <div class="portfolio-hover">
+                                <img src="@item.ImgUrl" />
+                            </div>
+                        </div>                     
+                        <div class="col-lg-6 text-center">    
+                            <div class="portfolio-caption" style="text-align: left">
+                                <h4>
+                                    @item.Title
+                                </h4>
+                                <h5>
+                                   Author: @item.Author
+                                </h5>
+                                @if (item.ISBN10 == null)
+                                {
+                                    <h5>
+                                       ISBN: @item.ISBN13
+                                    </h5>
+                                }
+                                else
+                                {
+                                    <h5>
+                                        ISBN: @item.ISBN10
+                                    </h5>
+                                }                       
+                            </div>                                 
+                        </div>
+                        <div class="col-lg-3 text-center">
+                            <form asp-controller="Orders" asp-action="Order">
+                                <button id="Order" type="submit" class="btn btn-primary-lg searchButton">Order</button>
+                            </form>
+                        </div>
+                        <hr />
+                    </div>
+
+                }
+            </div>
+        }
+    </section>
+</div>
